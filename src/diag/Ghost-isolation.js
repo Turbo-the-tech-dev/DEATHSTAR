@@ -1,0 +1,1 @@
+/* Ghost-isolation - Imperial Directive */
