@@ -1,0 +1,18 @@
+# IMPERIAL SUPERWEAPON CORE CONFIGURATION
+# CODENAME: DEATHSTAR | PROTOCOL: SIGMA-PRIME
+
+reactor_core:
+  kyber_crystal_count: 8
+  neural_radiation_level: CRITICAL
+  ohio_containment_field: MAXIMUM
+
+weapon_systems:
+  primary_ignition: "standby"
+  rizz_beam_intensity: 9001
+  target_lock: false
+
+vulnerabilities:
+  thermal_exhaust_port:
+    status: "RAY-SHIELDED"
+    width: "2 meters"
+    note: "Sigma Directive 66: Unauthorized X-Wings will be vaporized."
