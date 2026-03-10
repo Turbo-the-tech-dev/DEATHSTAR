@@ -16,3 +16,9 @@ vulnerabilities:
     status: "RAY-SHIELDED"
     width: "2 meters"
     note: "Sigma Directive 66: Unauthorized X-Wings will be vaporized."
+
+optical_arrays:
+  focusing_lens_status: "ALIGNED"
+  beam_convergence_angle: "0.0001 degrees"
+  scatter_prevention: "SIGMA_SEALED"
+  radiation_type: "OHIO_GRADE_GREEN"
