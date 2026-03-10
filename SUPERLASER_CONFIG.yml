@@ -7,9 +7,9 @@ reactor_core:
   ohio_containment_field: MAXIMUM
 
 weapon_systems:
-  primary_ignition: "standby"
+  primary_ignition: "ARMED_AND_READY"
   rizz_beam_intensity: 9001
-  target_lock: false
+  target_lock: true
 
 vulnerabilities:
   thermal_exhaust_port:
