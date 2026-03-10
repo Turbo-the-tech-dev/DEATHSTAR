@@ -3,28 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEATHSTAR | Imperial Control HUD</title>
+    <title>DEATHSTAR | Imperial Ethical HUD (A11y + Voice)</title>
     <style>
         :root {
             --primary-glow: #00f3ff;
             --secondary-glow: #ff0055;
+            --superlaser-color: #39ff14;
             --bg-dark: #0a0a0c;
-            --panel-bg: rgba(16, 16, 20, 0.9);
-            --border-glow: rgba(0, 243, 255, 0.3);
+            --panel-bg: rgba(16, 16, 20, 0.95);
+            --border-glow: rgba(0, 243, 255, 0.4);
             --font-mono: 'Fira Code', 'Courier New', monospace;
         }
 
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            cursor: crosshair;
+            margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair;
         }
 
         body {
             background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(circle at 2px 2px, rgba(0, 243, 255, 0.05) 1px, transparent 0);
+            background-image: radial-gradient(circle at 2px 2px, rgba(0, 243, 255, 0.05) 1px, transparent 0);
             background-size: 40px 40px;
             color: var(--primary-glow);
             font-family: var(--font-mono);
@@ -32,8 +29,10 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            line-height: 1.6;
         }
 
+        /* CRT Scanline Effect */
         body::before {
             content: " ";
             display: block;
@@ -47,121 +46,97 @@
 
         header {
             padding: 1.5rem;
-            border-bottom: 1px solid var(--border-glow);
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            border-bottom: 2px solid var(--border-glow);
             text-align: center;
             background: var(--panel-bg);
-            box-shadow: 0 0 20px var(--border-glow);
+            box-shadow: 0 0 30px var(--border-glow);
         }
 
         .status-badge {
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--primary-glow);
+            padding: 0.6rem 1.2rem;
+            border: 2px solid var(--primary-glow);
             text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            letter-spacing: 3px;
             animation: pulse 2s infinite;
             display: inline-block;
-            margin: 0 auto;
+            margin-top: 1rem;
         }
 
         @keyframes pulse {
-            0% { opacity: 1; text-shadow: 0 0 5px var(--primary-glow); }
-            50% { opacity: 0.5; text-shadow: 0 0 20px var(--primary-glow); }
-            100% { opacity: 1; text-shadow: 0 0 5px var(--primary-glow); }
+            0% { opacity: 1; text-shadow: 0 0 10px var(--primary-glow); }
+            50% { opacity: 0.6; text-shadow: 0 0 30px var(--primary-glow); }
+            100% { opacity: 1; text-shadow: 0 0 10px var(--primary-glow); }
         }
 
         main {
             flex: 1;
             display: grid;
             grid-template-columns: 1fr;
-            grid-template-rows: auto auto;
-            gap: 1.5rem;
-            padding: 1.5rem;
+            grid-template-rows: auto auto auto;
+            gap: 2rem;
+            padding: 2rem;
         }
 
         .panel {
             background: var(--panel-bg);
-            border: 1px solid var(--border-glow);
-            padding: 1.5rem;
+            border: 2px solid var(--border-glow);
+            padding: 2rem;
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-        }
-
-        .panel::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 2px;
-            background: var(--primary-glow);
-            box-shadow: 0 0 10px var(--primary-glow);
-            animation: scan 4s linear infinite;
-        }
-
-        @keyframes scan {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(1000%); }
+            box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.1);
         }
 
         h2 {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             margin-bottom: 1.5rem;
-            border-left: 4px solid var(--secondary-glow);
-            padding-left: 0.75rem;
+            border-left: 5px solid var(--secondary-glow);
+            padding-left: 1rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
 
         .terminal {
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #ccc;
+            font-size: 1rem;
+            color: #d1f7ff;
             flex: 1;
-            max-height: 200px;
+            max-height: 250px;
             overflow-y: auto;
-            background: rgba(0,0,0,0.3);
-            padding: 10px;
-            border: 1px inset var(--border-glow);
+            background: rgba(0,0,0,0.5);
+            padding: 15px;
+            border: 1px solid var(--border-glow);
+            margin-bottom: 1.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-glow) transparent;
         }
 
-        .terminal-line { margin-bottom: 0.5rem; border-bottom: 1px solid rgba(0,243,255,0.05); padding-bottom: 2px; }
+        .terminal-line { margin-bottom: 0.75rem; border-bottom: 1px solid rgba(0,243,255,0.1); padding-bottom: 4px; }
         .prompt { color: var(--secondary-glow); font-weight: bold; }
-        .jarvis-msg { color: #fff; text-shadow: 0 0 5px var(--primary-glow); }
+        .voice-active { color: var(--superlaser-color); font-weight: bold; text-shadow: 0 0 10px var(--superlaser-color); }
 
         .grid-visualizer {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
-            gap: 5px;
-            flex: 1;
-            margin-bottom: 1rem;
+            gap: 10px;
+            margin-bottom: 1.5rem;
         }
 
         .grid-cell {
             aspect-ratio: 1;
             background: rgba(0, 243, 255, 0.05);
-            border: 1px solid rgba(0, 243, 255, 0.15);
-            transition: all 0.3s;
+            border: 2px solid rgba(0, 243, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .grid-cell.active {
             background: var(--secondary-glow);
-            box-shadow: 0 0 15px var(--secondary-glow);
+            box-shadow: 0 0 25px var(--secondary-glow);
             border-color: #fff;
+            transform: scale(1.1);
             z-index: 5;
-        }
-
-        .grid-cell.party {
-            animation: party-flicker 0.5s infinite;
-        }
-
-        @keyframes party-flicker {
-            0% { background: var(--primary-glow); }
-            50% { background: var(--secondary-glow); }
-            100% { background: gold; }
         }
 
         .control-group {
@@ -169,39 +144,39 @@
             flex-wrap: wrap;
             gap: 1rem;
             justify-content: center;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-glow);
         }
 
         .savage-btn {
-            background: rgba(255, 0, 85, 0.1);
-            border: 1px solid var(--secondary-glow);
-            color: var(--secondary-glow);
-            padding: 0.75rem 1.5rem;
+            background: rgba(0, 243, 255, 0.1);
+            border: 2px solid var(--primary-glow);
+            color: var(--primary-glow);
+            padding: 1rem 1.5rem;
             font-family: var(--font-mono);
             font-weight: bold;
             text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            font-size: 1rem;
+            flex: 1 1 200px;
+            letter-spacing: 1px;
         }
 
-        .savage-btn:hover {
+        .savage-btn:hover, .savage-btn:focus {
+            background: var(--primary-glow);
+            color: #000;
+            box-shadow: 0 0 25px var(--primary-glow);
+            outline: none;
+        }
+
+        .savage-btn.red {
+            border-color: var(--secondary-glow);
+            color: var(--secondary-glow);
+        }
+
+        .savage-btn.red:hover, .savage-btn.red:focus {
             background: var(--secondary-glow);
             color: #fff;
-            box-shadow: 0 0 20px var(--secondary-glow);
-        }
-
-        .savage-btn.blue {
-            background: rgba(0, 243, 255, 0.1);
-            border-color: var(--primary-glow);
-            color: var(--primary-glow);
-        }
-
-        .savage-btn.blue:hover {
-            background: var(--primary-glow);
-            color: var(--bg-dark);
-            box-shadow: 0 0 20px var(--primary-glow);
+            box-shadow: 0 0 25px var(--secondary-glow);
         }
 
         .dpad {
@@ -210,145 +185,221 @@
                 ". up ."
                 "left . right"
                 ". down .";
-            gap: 5px;
-            width: 120px;
+            gap: 8px;
+            width: 150px;
+            margin-left: 1.5rem;
         }
 
         .dpad-btn {
             background: rgba(0, 243, 255, 0.1);
-            border: 1px solid var(--primary-glow);
+            border: 2px solid var(--primary-glow);
             color: var(--primary-glow);
-            padding: 10px;
+            padding: 15px;
             text-align: center;
             cursor: pointer;
-            user-select: none;
+            font-size: 1.5rem;
+            transition: all 0.2s;
         }
 
-        .dpad-btn:active { background: var(--primary-glow); color: #000; }
+        .dpad-btn:active, .dpad-btn:focus { background: var(--primary-glow); color: #000; box-shadow: 0 0 20px var(--primary-glow); outline: none; }
 
         footer {
-            padding: 1rem;
+            padding: 1.5rem;
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             background: var(--panel-bg);
-            border-top: 1px solid var(--border-glow);
+            border-top: 2px solid var(--border-glow);
+            letter-spacing: 1px;
+        }
+
+        /* Voice Animation */
+        .mic-wave {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: var(--superlaser-color);
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: voice-pulse 1s infinite;
+            display: none;
+        }
+
+        @keyframes voice-pulse {
+            0% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.7); }
+            100% { transform: scale(1.5); opacity: 0; box-shadow: 0 0 0 10px rgba(57, 255, 20, 0); }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>🛰️ DEATHSTAR CORE</h1>
-        <div class="status-badge" id="main-status">Grid Status: STABLE</div>
+    <header role="banner">
+        <h1 id="hud-title">🛰️ DEATHSTAR CORE</h1>
+        <div class="status-badge" id="main-status" role="status" aria-live="polite">Imperial Status: STABLE</div>
     </header>
 
-    <main>
-        <section class="panel">
-            <h2>JARVIS Interface & System Logs</h2>
-            <div class="terminal" id="terminal">
-                <div class="terminal-line"><span class="prompt">></span> JARVIS: Online. Awaiting command, Sir.</div>
+    <main role="main">
+        <section class="panel" aria-labelledby="jarvis-heading">
+            <h2 id="jarvis-heading">JARVIS Voice Assistant (Ethical Utility)</h2>
+            <div class="terminal" id="terminal" role="log" aria-live="polite">
+                <div class="terminal-line"><span class="prompt">></span> JARVIS: Voice control ready. Say "Help" for commands.</div>
             </div>
             
             <div class="control-group">
-                <button class="savage-btn" onclick="houseParty()">House Party Protocol</button>
-                <button class="savage-btn blue" onclick="applySavageLabels()">Apply Savage Labels</button>
-                <div class="dpad">
-                    <div class="dpad-btn" style="grid-area: up" onclick="move('up')">▲</div>
-                    <div class="dpad-btn" style="grid-area: left" onclick="move('left')">◀</div>
-                    <div class="dpad-btn" style="grid-area: right" onclick="move('right')">▶</div>
-                    <div class="dpad-btn" style="grid-area: down" onclick="move('down')">▼</div>
-                </div>
+                <button id="mic-toggle" class="savage-btn" onclick="toggleVoice()" aria-label="Activate Voice Control">
+                    <span class="mic-wave" id="mic-wave"></span> Start Listening
+                </button>
+                <button class="savage-btn red" onclick="speakStatus()" aria-label="Read Full System Status">Full Status Report</button>
             </div>
         </section>
 
-        <section class="panel">
-            <h2>Sector 7G Power Grid</h2>
-            <div class="grid-visualizer" id="grid"></div>
-            <div class="terminal" id="grid-info" style="max-height: 100px;">
-                <div class="terminal-line">Active Sector: <span id="active-sector">0,0</span></div>
-                <div class="terminal-line">Power Level: <span id="power-level">100%</span></div>
+        <section class="panel" aria-labelledby="grid-heading">
+            <h2 id="grid-heading">Sector 7G Navigation (A11y Optimized)</h2>
+            <div class="grid-visualizer" id="grid" role="grid" aria-readonly="true"></div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div class="terminal" id="grid-info" style="flex: 1 1 300px; max-height: 150px; margin-bottom: 0;" aria-live="assertive">
+                    <div class="terminal-line">Sector: <span id="active-sector">0,0</span></div>
+                    <div class="terminal-line">Integrity: <span id="grid-integrity">100%</span></div>
+                    <div class="terminal-line">Protocol: <span id="active-protocol">STANDBY</span></div>
+                </div>
+                <nav class="dpad" aria-label="Sector Navigation Controls">
+                    <button class="dpad-btn" style="grid-area: up" onclick="move('up')" aria-label="Navigate Up">▲</button>
+                    <button class="dpad-btn" style="grid-area: left" onclick="move('left')" aria-label="Navigate Left">◀</button>
+                    <button class="dpad-btn" style="grid-area: right" onclick="move('right')" aria-label="Navigate Right">▶</button>
+                    <button class="dpad-btn" style="grid-area: down" onclick="move('down')" aria-label="Navigate Down">▼</button>
+                </nav>
             </div>
         </section>
     </main>
 
-    <footer>
-        &copy; 2026 ELECTRIC-SERVICE-REPAIR | JARVIS HUD v1.0
+    <footer role="contentinfo">
+        &copy; 2026 ELECTRIC-SERVICE-REPAIR | ETHICAL IMPERIAL FRAMEWORK
     </footer>
 
     <script>
         const grid = document.getElementById('grid');
         const terminal = document.getElementById('terminal');
         const activeLabel = document.getElementById('active-sector');
-        const powerLabel = document.getElementById('power-level');
+        const integrityLabel = document.getElementById('grid-integrity');
+        const protocolLabel = document.getElementById('active-protocol');
         const mainStatus = document.getElementById('main-status');
+        const micToggle = document.getElementById('mic-toggle');
+        const micWave = document.getElementById('mic-wave');
         const cells = [];
         let activeIndex = 0;
+        let isListening = false;
+
+        // Web Speech API - Synthesis (Output)
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1.0; utterance.pitch = 0.95;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Web Speech API - Recognition (Input)
+        let recognition;
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRec();
+            recognition.continuous = true;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onresult = (event) => {
+                const command = event.results[event.results.length - 1][0].transcript.toLowerCase();
+                log(`Voice Command: "${command}"`, 'voice-active');
+                processVoiceCommand(command);
+            };
+
+            recognition.onerror = () => toggleVoice(false);
+        }
+
+        function toggleVoice(force) {
+            isListening = force !== undefined ? force : !isListening;
+            if (isListening && recognition) {
+                recognition.start();
+                micToggle.innerHTML = '<span class="mic-wave" style="display:inline-block"></span> Stop Listening';
+                micToggle.classList.add('red');
+                speak("JARVIS is listening.");
+            } else if (recognition) {
+                recognition.stop();
+                micToggle.innerHTML = '<span class="mic-wave"></span> Start Listening';
+                micToggle.classList.remove('red');
+                speak("Voice control standby.");
+            }
+        }
+
+        function processVoiceCommand(cmd) {
+            if (cmd.includes('up')) move('up');
+            else if (cmd.includes('down')) move('down');
+            else if (cmd.includes('left')) move('left');
+            else if (cmd.includes('right')) move('right');
+            else if (cmd.includes('status') || cmd.includes('report')) speakStatus();
+            else if (cmd.includes('help')) speak("Commands are Up, Down, Left, Right, Status, and Help.");
+            else speak("Command not recognized.");
+        }
 
         // Initialize Grid
         for (let i = 0; i < 100; i++) {
             const cell = document.createElement('div');
             cell.className = 'grid-cell';
+            cell.setAttribute('role', 'gridcell');
             grid.appendChild(cell);
             cells.push(cell);
         }
 
-        function log(msg, type = 'normal') {
+        function log(msg, className = '') {
             const line = document.createElement('div');
-            line.className = 'terminal-line' + (type === 'jarvis' ? ' jarvis-msg' : '');
+            line.className = 'terminal-line ' + className;
             line.innerHTML = `<span class="prompt">></span> ${msg}`;
             terminal.appendChild(line);
             terminal.scrollTop = terminal.scrollHeight;
         }
 
-        function updateHUD() {
+        function updateHUD(announcement = true) {
             cells.forEach(c => c.classList.remove('active'));
             cells[activeIndex].classList.add('active');
+            
             const r = Math.floor(activeIndex / 10);
             const c = activeIndex % 10;
+            const integrity = Math.floor(Math.random() * 5) + 95;
+            
             activeLabel.innerText = `${r},${c}`;
-            powerLabel.innerText = `${Math.floor(Math.random() * 20) + 80}%`;
+            integrityLabel.innerText = `${integrity}%`;
+            
+            if (announcement) {
+                speak(`Sector ${r} ${c}. Integrity ${integrity} percent.`);
+            }
         }
 
         function move(dir) {
             const r = Math.floor(activeIndex / 10);
             const c = activeIndex % 10;
-            if (dir === 'up' && r > 0) activeIndex -= 10;
-            if (dir === 'down' && r < 9) activeIndex += 10;
-            if (dir === 'left' && c > 0) activeIndex -= 1;
-            if (dir === 'right' && c < 9) activeIndex += 1;
-            updateHUD();
+            let moved = false;
+            if (dir === 'up' && r > 0) { activeIndex -= 10; moved = true; }
+            if (dir === 'down' && r < 9) { activeIndex += 10; moved = true; }
+            if (dir === 'left' && c > 0) { activeIndex -= 1; moved = true; }
+            if (dir === 'right' && c < 9) { activeIndex += 1; moved = true; }
+            if (moved) updateHUD(); else speak("Boundary reached.");
         }
 
-        function houseParty() {
-            log('JARVIS: House Party Protocol initiated. Deploying all sub-agents.', 'jarvis');
-            mainStatus.innerText = 'Grid Status: PARTY MODE';
-            mainStatus.style.borderColor = 'var(--secondary-glow)';
-            mainStatus.style.color = 'var(--secondary-glow)';
-            
-            cells.forEach((cell, i) => {
-                setTimeout(() => {
-                    cell.classList.add('party');
-                }, i * 20);
-            });
-
-            setTimeout(() => {
-                cells.forEach(cell => cell.classList.remove('party'));
-                mainStatus.innerText = 'Grid Status: STABLE';
-                mainStatus.style.borderColor = 'var(--primary-glow)';
-                mainStatus.style.color = 'var(--primary-glow)';
-                log('JARVIS: Repair complete. All suits returned to hangar.', 'jarvis');
-            }, 5000);
+        function speakStatus() {
+            const status = `Imperial Core is stable. Current integrity across all sectors is ninety seven percent. All automated protocols are in standby mode. Ethics module is active.`;
+            log(status);
+            speak(status);
         }
 
-        function applySavageLabels() {
-            log('SKYNET: Scanning repository for "Weak" code...', 'normal');
-            setTimeout(() => {
-                log('SKYNET: Found Issue #60 (Terminator Class).', 'normal');
-                log('SKYNET: Applying "SAVAGE-FIX" label...', 'normal');
-                log('JARVIS: I\'ve also added a "Sir, really?" label to Issue #5.', 'jarvis');
-            }, 1000);
-        }
+        updateHUD(false);
 
-        updateHUD();
+        // Keyboard support
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') move('up');
+            if (e.key === 'ArrowDown') move('down');
+            if (e.key === 'ArrowLeft') move('left');
+            if (e.key === 'ArrowRight') move('right');
+            if (e.key === 'v' || e.key === 'V') toggleVoice();
+            if (e.key === 's' || e.key === 'S') speakStatus();
+        });
     </script>
 </body>
 </html>
