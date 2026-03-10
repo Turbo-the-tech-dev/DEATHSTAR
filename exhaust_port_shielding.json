@@ -1,6 +1,6 @@
 {
   "shield_status": "ACTIVE",
-  "deflector_arrays": 100,
-  "vulnerability_scan": "PASSED",
+  "deflector_arrays": 200,
+  "vulnerability_scan": "MAXIMUM_SECURITY",
   "fanum_tax_applied": false
 }
