@@ -1,0 +1,13 @@
+# IMPERIAL HYPERDRIVE CONFIGURATION
+# STATUS: UNLIMITED RIZZ
+# PROTOCOL: ABSOLUTE_VELOCITY
+
+jump_parameters:
+  class: 0.5
+  motivation_crystal: "KYBER_PRIME"
+  skibidi_tunneling: "ACTIVE"
+
+nav_computer:
+  bypassed_firewalls: true
+  relativistic_drag: 0.00
+  destination_lock: "ALDERAAN_COORDINATES"
