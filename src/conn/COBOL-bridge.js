@@ -1,0 +1,1 @@
+/* COBOL-bridge - Imperial Directive */
