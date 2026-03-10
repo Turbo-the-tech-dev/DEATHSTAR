@@ -1,0 +1,8 @@
+{
+  "name": "@electric-service-repair/omega-fail-safe",
+  "version": "1.0.0",
+  "description": "Imperial Artifact: omega-fail-safe",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

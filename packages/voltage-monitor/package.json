@@ -1,0 +1,8 @@
+{
+  "name": "@electric-service-repair/voltage-monitor",
+  "version": "1.0.0",
+  "description": "Imperial Artifact: voltage-monitor",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

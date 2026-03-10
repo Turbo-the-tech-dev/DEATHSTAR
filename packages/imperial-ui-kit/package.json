@@ -1,0 +1,8 @@
+{
+  "name": "@electric-service-repair/imperial-ui-kit",
+  "version": "1.0.0",
+  "description": "Imperial Artifact: imperial-ui-kit",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

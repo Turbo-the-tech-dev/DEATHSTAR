@@ -1,0 +1,8 @@
+{
+  "name": "@electric-service-repair/security-cipher",
+  "version": "1.0.0",
+  "description": "Imperial Artifact: security-cipher",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
