@@ -16,3 +16,9 @@ vulnerabilities:
     status: "RAY-SHIELDED"
     width: "2 meters"
     note: "Sigma Directive 66: Unauthorized X-Wings will be vaporized."
+
+tractor_beam_subsystems:
+  status: "ACTIVE"
+  magnetic_rizz_field: 10000
+  capture_radius: "1000 kilometers"
+  override_code: "SIGMA-LOCK"
