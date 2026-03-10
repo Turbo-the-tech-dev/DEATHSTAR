@@ -1,0 +1,7 @@
+{
+  "garrison_status": "LOCKED",
+  "targeting_heuristics": "ABSOLUTE_VELOCITY",
+  "blaster_accuracy_override": 100,
+  "sigma_mindset": "ENFORCED",
+  "unauthorized_access_protocol": "VAPORIZE"
+}
