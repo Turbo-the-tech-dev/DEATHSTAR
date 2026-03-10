@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Digital Engineering and Technical Hardware System for Total Automated Repair",
   "main": "src/core/main.js",
+  "type": "module",
   "scripts": {
     "start": "npx serve .",
     "test": "echo \"Error: no test specified\" && exit 0",
