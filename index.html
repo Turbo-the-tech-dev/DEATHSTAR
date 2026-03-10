@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEATHSTAR | Imperial Ethical HUD (A11y + Voice)</title>
+    <title>DEATHSTAR | Zero-Loss Ethical HUD (A11y + Voice)</title>
     <style>
         :root {
             --primary-glow: #00f3ff;
             --secondary-glow: #ff0055;
+            --ewok-color: #ffaa00;
             --superlaser-color: #39ff14;
             --bg-dark: #0a0a0c;
             --panel-bg: rgba(16, 16, 20, 0.95);
@@ -15,9 +16,7 @@
             --font-mono: 'Fira Code', 'Courier New', monospace;
         }
 
-        * {
-            margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
 
         body {
             background-color: var(--bg-dark);
@@ -29,39 +28,26 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            line-height: 1.6;
         }
 
-        /* CRT Scanline Effect */
         body::before {
-            content: " ";
-            display: block;
-            position: fixed;
+            content: " "; display: block; position: fixed;
             top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 100;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
+            z-index: 100; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
         header {
-            padding: 1.5rem;
-            border-bottom: 2px solid var(--border-glow);
-            text-align: center;
-            background: var(--panel-bg);
+            padding: 1.5rem; border-bottom: 2px solid var(--border-glow);
+            text-align: center; background: var(--panel-bg);
             box-shadow: 0 0 30px var(--border-glow);
         }
 
         .status-badge {
-            padding: 0.6rem 1.2rem;
-            border: 2px solid var(--primary-glow);
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            font-weight: bold;
-            letter-spacing: 3px;
-            animation: pulse 2s infinite;
-            display: inline-block;
-            margin-top: 1rem;
+            padding: 0.6rem 1.2rem; border: 2px solid var(--primary-glow);
+            text-transform: uppercase; font-size: 0.9rem; font-weight: bold;
+            letter-spacing: 3px; animation: pulse 2s infinite;
+            display: inline-block; margin-top: 1rem;
         }
 
         @keyframes pulse {
@@ -71,195 +57,170 @@
         }
 
         main {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: auto auto auto;
-            gap: 2rem;
-            padding: 2rem;
+            flex: 1; display: grid; grid-template-columns: 1fr;
+            grid-template-rows: auto auto auto auto;
+            gap: 2rem; padding: 2rem;
         }
 
         .panel {
-            background: var(--panel-bg);
-            border: 2px solid var(--border-glow);
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            background: var(--panel-bg); border: 2px solid var(--border-glow);
+            padding: 2rem; position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
             box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.1);
         }
 
         h2 {
-            font-size: 1.4rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.4rem; margin-bottom: 1.5rem;
             border-left: 5px solid var(--secondary-glow);
-            padding-left: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            padding-left: 1rem; text-transform: uppercase; letter-spacing: 2px;
         }
 
         .terminal {
-            font-size: 1rem;
-            color: #d1f7ff;
-            flex: 1;
-            max-height: 250px;
-            overflow-y: auto;
-            background: rgba(0,0,0,0.5);
-            padding: 15px;
-            border: 1px solid var(--border-glow);
-            margin-bottom: 1.5rem;
-            scrollbar-width: thin;
+            font-size: 1rem; color: #d1f7ff; flex: 1;
+            max-height: 200px; overflow-y: auto; background: rgba(0,0,0,0.5);
+            padding: 15px; border: 1px solid var(--border-glow);
+            margin-bottom: 1.5rem; scrollbar-width: thin;
             scrollbar-color: var(--primary-glow) transparent;
         }
 
         .terminal-line { margin-bottom: 0.75rem; border-bottom: 1px solid rgba(0,243,255,0.1); padding-bottom: 4px; }
         .prompt { color: var(--secondary-glow); font-weight: bold; }
-        .voice-active { color: var(--superlaser-color); font-weight: bold; text-shadow: 0 0 10px var(--superlaser-color); }
+        .l33t-code { color: var(--superlaser-color); font-weight: bold; font-style: italic; }
 
         .grid-visualizer {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 10px;
-            margin-bottom: 1.5rem;
+            display: grid; grid-template-columns: repeat(10, 1fr);
+            gap: 10px; margin-bottom: 1.5rem;
         }
 
         .grid-cell {
-            aspect-ratio: 1;
-            background: rgba(0, 243, 255, 0.05);
+            aspect-ratio: 1; background: rgba(0, 243, 255, 0.05);
             border: 2px solid rgba(0, 243, 255, 0.2);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s;
         }
 
         .grid-cell.active {
-            background: var(--secondary-glow);
-            box-shadow: 0 0 25px var(--secondary-glow);
-            border-color: #fff;
-            transform: scale(1.1);
-            z-index: 5;
+            background: var(--secondary-glow); box-shadow: 0 0 25px var(--secondary-glow);
+            border-color: #fff; transform: scale(1.1); z-index: 5;
         }
 
         .control-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
+            display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;
         }
 
         .savage-btn {
-            background: rgba(0, 243, 255, 0.1);
-            border: 2px solid var(--primary-glow);
-            color: var(--primary-glow);
-            padding: 1rem 1.5rem;
-            font-family: var(--font-mono);
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1rem;
-            flex: 1 1 200px;
-            letter-spacing: 1px;
+            background: rgba(0, 243, 255, 0.1); border: 2px solid var(--primary-glow);
+            color: var(--primary-glow); padding: 1rem 1.5rem;
+            font-family: var(--font-mono); font-weight: bold;
+            text-transform: uppercase; cursor: pointer; transition: all 0.3s;
+            font-size: 1rem; flex: 1 1 200px;
         }
 
         .savage-btn:hover, .savage-btn:focus {
-            background: var(--primary-glow);
-            color: #000;
-            box-shadow: 0 0 25px var(--primary-glow);
-            outline: none;
+            background: var(--primary-glow); color: #000; box-shadow: 0 0 25px var(--primary-glow); outline: none;
         }
 
-        .savage-btn.red {
-            border-color: var(--secondary-glow);
-            color: var(--secondary-glow);
+        .savage-btn.ewok {
+            border-color: var(--ewok-color); color: var(--ewok-color);
+            background: rgba(255, 170, 0, 0.1);
         }
 
-        .savage-btn.red:hover, .savage-btn.red:focus {
-            background: var(--secondary-glow);
-            color: #fff;
-            box-shadow: 0 0 25px var(--secondary-glow);
+        .savage-btn.ewok:hover, .savage-btn.ewok:focus {
+            background: var(--ewok-color); color: #000; box-shadow: 0 0 25px var(--ewok-color);
         }
 
         .dpad {
-            display: grid;
-            grid-template-areas: 
-                ". up ."
-                "left . right"
-                ". down .";
-            gap: 8px;
-            width: 150px;
-            margin-left: 1.5rem;
+            display: grid; grid-template-areas: ". up ." "left . right" ". down .";
+            gap: 8px; width: 150px; margin: 0 auto;
         }
 
         .dpad-btn {
-            background: rgba(0, 243, 255, 0.1);
-            border: 2px solid var(--primary-glow);
-            color: var(--primary-glow);
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            font-size: 1.5rem;
-            transition: all 0.2s;
+            background: rgba(0, 243, 255, 0.1); border: 2px solid var(--primary-glow);
+            color: var(--primary-glow); padding: 15px; text-align: center;
+            cursor: pointer; font-size: 1.5rem; transition: all 0.2s;
         }
-
-        .dpad-btn:active, .dpad-btn:focus { background: var(--primary-glow); color: #000; box-shadow: 0 0 20px var(--primary-glow); outline: none; }
 
         footer {
-            padding: 1.5rem;
-            text-align: center;
-            font-size: 0.8rem;
-            background: var(--panel-bg);
-            border-top: 2px solid var(--border-glow);
-            letter-spacing: 1px;
+            padding: 1.5rem; text-align: center; font-size: 0.8rem;
+            background: var(--panel-bg); border-top: 2px solid var(--border-glow);
         }
 
-        /* Voice Animation */
         .mic-wave {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            background: var(--superlaser-color);
-            border-radius: 50%;
-            margin-right: 10px;
-            animation: voice-pulse 1s infinite;
-            display: none;
+            display: inline-block; width: 20px; height: 20px;
+            background: var(--superlaser-color); border-radius: 50%;
+            margin-right: 10px; animation: voice-pulse 1s infinite; display: none;
         }
 
         @keyframes voice-pulse {
             0% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.7); }
             100% { transform: scale(1.5); opacity: 0; box-shadow: 0 0 0 10px rgba(57, 255, 20, 0); }
         }
+        .panel.locked {
+            filter: blur(2px);
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .lock-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.8);
+            z-index: 200;
+        }
+
+        .lock-input {
+            background: #000; border: 1px solid var(--primary-glow);
+            color: var(--primary-glow); padding: 10px;
+            font-family: var(--font-mono); text-align: center;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
     <header role="banner">
-        <h1 id="hud-title">🛰️ DEATHSTAR CORE</h1>
-        <div class="status-badge" id="main-status" role="status" aria-live="polite">Imperial Status: STABLE</div>
+        <h1 id="hud-title">🛰️ DEATHSTAR FOR THE WORLD</h1>
+        <div class="status-badge" id="main-status" role="status" aria-live="polite">Access Level: GUEST MODE</div>
     </header>
 
     <main role="main">
-        <section class="panel" aria-labelledby="jarvis-heading">
-            <h2 id="jarvis-heading">JARVIS Voice Assistant (Ethical Utility)</h2>
+        <section class="panel" aria-labelledby="guest-heading">
+            <h2 id="guest-heading">Guest Features (Ewok Academy)</h2>
             <div class="terminal" id="terminal" role="log" aria-live="polite">
-                <div class="terminal-line"><span class="prompt">></span> JARVIS: Voice control ready. Say "Help" for commands.</div>
+                <div class="terminal-line"><span class="prompt">></span> JARVIS: Guest Mode Active. Welcome, Ewok!</div>
             </div>
             
             <div class="control-group">
-                <button id="mic-toggle" class="savage-btn" onclick="toggleVoice()" aria-label="Activate Voice Control">
+                <button class="savage-btn ewok" onclick="requestOverride('organize')" aria-label="Organize Sector (Desktop)">
+                    🧹 Organize Sector (Desktop)
+                </button>
+                <button class="savage-btn" onclick="toggleVoice()" aria-label="Activate Voice Control">
                     <span class="mic-wave" id="mic-wave"></span> Start Listening
                 </button>
-                <button class="savage-btn red" onclick="speakStatus()" aria-label="Read Full System Status">Full Status Report</button>
+            </div>
+        </section>
+
+        <section class="panel" id="trash-panel" aria-labelledby="admin-heading">
+            <h2 id="admin-heading">Admin Features (Parental Override)</h2>
+            <div class="lock-overlay" id="trash-lock">
+                <p style="margin-bottom: 15px; color: var(--secondary-glow);">[ ADMIN ACCESS REQUIRED ]</p>
+                <input type="password" id="pass-input" class="lock-input" placeholder="ACCESS CODE">
+                <button class="savage-btn" onclick="checkPassword()" style="flex: none; width: 150px;">UNLOCK ADMIN</button>
+            </div>
+            <div class="terminal" style="height: 100px;">
+                <div class="terminal-line">No items in trash. Sector is clean.</div>
             </div>
         </section>
 
         <section class="panel" aria-labelledby="grid-heading">
-            <h2 id="grid-heading">Sector 7G Navigation (A11y Optimized)</h2>
+            <h2 id="grid-heading">Sector 7G Navigation</h2>
             <div class="grid-visualizer" id="grid" role="grid" aria-readonly="true"></div>
             
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                 <div class="terminal" id="grid-info" style="flex: 1 1 300px; max-height: 150px; margin-bottom: 0;" aria-live="assertive">
                     <div class="terminal-line">Sector: <span id="active-sector">0,0</span></div>
                     <div class="terminal-line">Integrity: <span id="grid-integrity">100%</span></div>
-                    <div class="terminal-line">Protocol: <span id="active-protocol">STANDBY</span></div>
+                    <div class="terminal-line">Command: <span id="active-command" class="l33t-code">cd /deathstar</span></div>
                 </div>
                 <nav class="dpad" aria-label="Sector Navigation Controls">
                     <button class="dpad-btn" style="grid-area: up" onclick="move('up')" aria-label="Navigate Up">▲</button>
@@ -272,7 +233,7 @@
     </main>
 
     <footer role="contentinfo">
-        &copy; 2026 ELECTRIC-SERVICE-REPAIR | ETHICAL IMPERIAL FRAMEWORK
+        &copy; 2026 ELECTRIC-SERVICE-REPAIR | ZERO LOSS MISSION
     </footer>
 
     <script>
@@ -280,15 +241,19 @@
         const terminal = document.getElementById('terminal');
         const activeLabel = document.getElementById('active-sector');
         const integrityLabel = document.getElementById('grid-integrity');
-        const protocolLabel = document.getElementById('active-protocol');
+        const commandLabel = document.getElementById('active-command');
         const mainStatus = document.getElementById('main-status');
-        const micToggle = document.getElementById('mic-toggle');
         const micWave = document.getElementById('mic-wave');
         const cells = [];
         let activeIndex = 0;
         let isListening = false;
 
-        // Web Speech API - Synthesis (Output)
+        const l33tCommands = [
+            "ls -la", "cd /home/deathstar", "chmod 777 core.js", "rm -rf /rebels",
+            "git push origin empire", "ssh emperor@deathstar", "sudo order66",
+            "mkdir -p Imperial_Docs", "mv *.txt ./docs", "grep 'rebel' logs.txt"
+        ];
+
         function speak(text) {
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
@@ -296,80 +261,93 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        // Web Speech API - Recognition (Input)
         let recognition;
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRec();
             recognition.continuous = true;
-            recognition.interimResults = false;
-            recognition.lang = 'en-US';
-
             recognition.onresult = (event) => {
                 const command = event.results[event.results.length - 1][0].transcript.toLowerCase();
-                log(`Voice Command: "${command}"`, 'voice-active');
-                processVoiceCommand(command);
+                log(`Ewok says: "${command}"`);
+                if (command.includes('up')) move('up');
+                else if (command.includes('down')) move('down');
+                else if (command.includes('left')) move('left');
+                else if (command.includes('right')) move('right');
+                else if (command.includes('organize')) requestOverride('organize');
             };
-
-            recognition.onerror = () => toggleVoice(false);
         }
 
-        function toggleVoice(force) {
-            isListening = force !== undefined ? force : !isListening;
+        function toggleVoice() {
+            isListening = !isListening;
             if (isListening && recognition) {
-                recognition.start();
-                micToggle.innerHTML = '<span class="mic-wave" style="display:inline-block"></span> Stop Listening';
-                micToggle.classList.add('red');
-                speak("JARVIS is listening.");
+                recognition.start(); micWave.style.display = 'inline-block';
+                speak("Ewok ears active. Tell me what to do.");
             } else if (recognition) {
-                recognition.stop();
-                micToggle.innerHTML = '<span class="mic-wave"></span> Start Listening';
-                micToggle.classList.remove('red');
-                speak("Voice control standby.");
+                recognition.stop(); micWave.style.display = 'none';
+                speak("Ewok is taking a nap.");
             }
         }
 
-        function processVoiceCommand(cmd) {
-            if (cmd.includes('up')) move('up');
-            else if (cmd.includes('down')) move('down');
-            else if (cmd.includes('left')) move('left');
-            else if (cmd.includes('right')) move('right');
-            else if (cmd.includes('status') || cmd.includes('report')) speakStatus();
-            else if (cmd.includes('help')) speak("Commands are Up, Down, Left, Right, Status, and Help.");
-            else speak("Command not recognized.");
+        function log(msg, l33t = null) {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.innerHTML = `<span class="prompt">></span> ${msg}`;
+            if (l33t) line.innerHTML += ` <span class="l33t-code">[l33t: ${l33t}]</span>`;
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+            speak(msg);
         }
 
-        // Initialize Grid
+        function requestOverride(action) {
+            log(`🔒 JARVIS: Action "${action}" requires Parental Override.`);
+            speak("Parental access required.");
+            document.getElementById('pass-input').focus();
+        }
+
+        function checkPassword() {
+            const pass = document.getElementById('pass-input').value;
+            if (pass === '1234' || pass === 'admin') {
+                log("🔓 JARVIS: Access Granted. Welcome, Commander. Your presence is an honor.");
+                mainStatus.innerText = 'Access Level: ADMIN MODE';
+                mainStatus.style.borderColor = 'var(--superlaser-color)';
+                document.getElementById('trash-lock').style.display = 'none';
+                speak("Welcome back, Commander. The world is yours to organize.");
+                organizeDesktop();
+            } else {
+                log("❌ JARVIS: Incorrect Access Code. Please try again, important guest.");
+                speak("Incorrect code. But you are still very important to us.");
+            }
+        }
+
+        function organizeDesktop() {
+            log("🧹 JARVIS: Organizing Desktop Sector...", "mkdir -p Docs Images Scripts && mv *.txt ./Docs");
+            mainStatus.innerText = 'Imperial Status: ORGANIZING...';
+            setTimeout(() => {
+                log("✅ Done! Sector organized with Zero-Loss.");
+                mainStatus.innerText = 'Mission Status: GLOBAL ACCESS MODE';
+            }, 1500);
+        }
+
         for (let i = 0; i < 100; i++) {
             const cell = document.createElement('div');
             cell.className = 'grid-cell';
-            cell.setAttribute('role', 'gridcell');
             grid.appendChild(cell);
             cells.push(cell);
-        }
-
-        function log(msg, className = '') {
-            const line = document.createElement('div');
-            line.className = 'terminal-line ' + className;
-            line.innerHTML = `<span class="prompt">></span> ${msg}`;
-            terminal.appendChild(line);
-            terminal.scrollTop = terminal.scrollHeight;
         }
 
         function updateHUD(announcement = true) {
             cells.forEach(c => c.classList.remove('active'));
             cells[activeIndex].classList.add('active');
-            
             const r = Math.floor(activeIndex / 10);
             const c = activeIndex % 10;
             const integrity = Math.floor(Math.random() * 5) + 95;
+            const cmd = l33tCommands[Math.floor(Math.random() * l33tCommands.length)];
             
             activeLabel.innerText = `${r},${c}`;
             integrityLabel.innerText = `${integrity}%`;
+            commandLabel.innerText = cmd;
             
-            if (announcement) {
-                speak(`Sector ${r} ${c}. Integrity ${integrity} percent.`);
-            }
+            if (announcement) speak(`Sector ${r} ${c}. L33t command: ${cmd}`);
         }
 
         function move(dir) {
@@ -380,26 +358,10 @@
             if (dir === 'down' && r < 9) { activeIndex += 10; moved = true; }
             if (dir === 'left' && c > 0) { activeIndex -= 1; moved = true; }
             if (dir === 'right' && c < 9) { activeIndex += 1; moved = true; }
-            if (moved) updateHUD(); else speak("Boundary reached.");
-        }
-
-        function speakStatus() {
-            const status = `Imperial Core is stable. Current integrity across all sectors is ninety seven percent. All automated protocols are in standby mode. Ethics module is active.`;
-            log(status);
-            speak(status);
+            if (moved) updateHUD();
         }
 
         updateHUD(false);
-
-        // Keyboard support
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowUp') move('up');
-            if (e.key === 'ArrowDown') move('down');
-            if (e.key === 'ArrowLeft') move('left');
-            if (e.key === 'ArrowRight') move('right');
-            if (e.key === 'v' || e.key === 'V') toggleVoice();
-            if (e.key === 's' || e.key === 'S') speakStatus();
-        });
     </script>
 </body>
 </html>
