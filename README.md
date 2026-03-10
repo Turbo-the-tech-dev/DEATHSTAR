@@ -38,9 +38,18 @@ git clone https://github.com/Electric-Service-Repair/DEATHSTAR.git
 # Initialize Supply Chain (Issue #5)
 npm install
 
+# Launch Holographic Dashboard (Issue #3)
+npm start
+
 # Deploy Imperial Guard (Issue #4)
-npm test
+npm run imperial-guard
 ```
+
+## 🖥️ Holographic Dashboard
+Access the **Imperial Control HUD** at `localhost:3000` (or the port provided by `serve`). This real-time interface provides:
+- **Sector 7G Power Grid Visualizer**
+- **SKYNET Sync Status**
+- **JARVIS System Diagnostics**
 
 ## 📊 Imperial Roadmap
 - [x] **Phase I:** Project Foundation (Issue #1)

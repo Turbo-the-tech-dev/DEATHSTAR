@@ -1,0 +1,19 @@
+{
+  "name": "deathstar",
+  "version": "1.0.0",
+  "description": "Digital Engineering and Technical Hardware System for Total Automated Repair",
+  "main": "src/core/main.js",
+  "scripts": {
+    "start": "npx serve .",
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "imperial-guard": "node src/core/main.js"
+  },
+  "keywords": [
+    "savage",
+    "imperial",
+    "deathstar",
+    "grid-stabilizer"
+  ],
+  "author": "Electric-Service-Repair Team",
+  "license": "MIT"
+}

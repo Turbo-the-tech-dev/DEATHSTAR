@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEATHSTAR | Imperial Control HUD</title>
+    <style>
+        :root {
+            --primary-glow: #00f3ff;
+            --secondary-glow: #ff0055;
+            --bg-dark: #0a0a0c;
+            --panel-bg: rgba(16, 16, 20, 0.9);
+            --border-glow: rgba(0, 243, 255, 0.3);
+            --font-mono: 'Fira Code', 'Courier New', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: crosshair;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 2px 2px, rgba(0, 243, 255, 0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+            color: var(--primary-glow);
+            font-family: var(--font-mono);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Scanline Effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 10;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-glow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            box-shadow: 0 0 20px var(--border-glow);
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--primary-glow);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; text-shadow: 0 0 5px var(--primary-glow); }
+            50% { opacity: 0.5; text-shadow: 0 0 20px var(--primary-glow); }
+            100% { opacity: 1; text-shadow: 0 0 5px var(--primary-glow); }
+        }
+
+        main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-glow);
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 2px;
+            background: var(--primary-glow);
+            box-shadow: 0 0 10px var(--primary-glow);
+            animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(500%); }
+        }
+
+        h2 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--secondary-glow);
+            padding-left: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .terminal {
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: #ccc;
+        }
+
+        .terminal-line { margin-bottom: 0.5rem; }
+        .prompt { color: var(--secondary-glow); }
+
+        .glitch {
+            font-weight: bold;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+        }
+
+        footer {
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.7rem;
+            border-top: 1px solid var(--border-glow);
+            background: var(--panel-bg);
+        }
+
+        .grid-visualizer {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
+            margin-top: 1rem;
+        }
+
+        .grid-cell {
+            aspect-ratio: 1;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            animation: flicker 3s infinite;
+        }
+
+        @keyframes flicker {
+            0% { background: rgba(0, 243, 255, 0.1); }
+            50% { background: rgba(0, 243, 255, 0.3); }
+            100% { background: rgba(0, 243, 255, 0.1); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1 class="glitch">🛰️ DEATHSTAR CORE</h1>
+        </div>
+        <div class="status-badge">Grid Status: STABLE</div>
+    </header>
+
+    <main>
+        <aside class="panel">
+            <h2>System Diagnostics</h2>
+            <div class="terminal">
+                <div class="terminal-line"><span class="prompt">></span> Booting Imperial OS...</div>
+                <div class="terminal-line"><span class="prompt">></span> JARVIS HUD Loaded.</div>
+                <div class="terminal-line"><span class="prompt">></span> SKYNET Grid Sync: OK</div>
+                <div class="terminal-line"><span class="prompt">></span> Force-Choke Protocol: ACTIVE</div>
+            </div>
+        </aside>
+
+        <section class="panel">
+            <h2>Power Grid Visualizer (Sector 7G)</h2>
+            <div class="grid-visualizer" id="grid">
+                <!-- Cells generated via script -->
+            </div>
+        </section>
+
+        <aside class="panel">
+            <h2>Imperial Roadmap</h2>
+            <div class="terminal">
+                <div class="terminal-line">[x] Phase I: Foundation</div>
+                <div class="terminal-line">[x] Phase II: Grid Stabilizer</div>
+                <div class="terminal-line">[ ] Phase III: Neural Link</div>
+                <div class="terminal-line">[ ] Phase IV: Judgment Day</div>
+            </div>
+        </aside>
+    </main>
+
+    <footer>
+        &copy; 2026 ELECTRIC-SERVICE-REPAIR | CLASSIFIED IMPERIAL DOCUMENT
+    </footer>
+
+    <script>
+        const grid = document.getElementById('grid');
+        for (let i = 0; i < 100; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'grid-cell';
+            cell.style.animationDelay = `${Math.random() * 5}s`;
+            grid.appendChild(cell);
+        }
+    </script>
+</body>
+</html>
