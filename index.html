@@ -50,7 +50,7 @@
         }
 
         header {
-            padding: 2rem;
+            padding: 1.5rem;
             border-bottom: 1px solid var(--border-glow);
             display: flex;
             justify-content: space-between;
@@ -77,34 +77,31 @@
         main {
             flex: 1;
             display: grid;
-            grid-template-columns: 300px 1fr 300px;
-            gap: 1rem;
-            padding: 1rem;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto auto;
+            gap: 1.5rem;
+            padding: 1.5rem;
             overflow-y: auto;
         }
 
-        @media (max-width: 900px) {
-            main {
-                grid-template-columns: 1fr;
-            }
-            
-            body {
-                overflow-y: auto;
-            }
+        body {
+            overflow-y: auto;
+        }
 
-            header {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
+        header {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
         }
 
         .panel {
             background: var(--panel-bg);
             border: 1px solid var(--border-glow);
-            padding: 1rem;
+            padding: 1.5rem;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .panel::after {
@@ -119,25 +116,27 @@
 
         @keyframes scan {
             0% { transform: translateY(-100%); }
-            100% { transform: translateY(500%); }
+            100% { transform: translateY(1000%); }
         }
 
         h2 {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            border-left: 3px solid var(--secondary-glow);
-            padding-left: 0.5rem;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--secondary-glow);
+            padding-left: 0.75rem;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .terminal {
-            font-size: 0.8rem;
-            line-height: 1.4;
+            font-size: 0.9rem;
+            line-height: 1.6;
             color: #ccc;
+            flex: 1;
         }
 
-        .terminal-line { margin-bottom: 0.5rem; }
-        .prompt { color: var(--secondary-glow); }
+        .terminal-line { margin-bottom: 0.75rem; }
+        .prompt { color: var(--secondary-glow); font-weight: bold; }
 
         .glitch {
             font-weight: bold;
@@ -152,26 +151,93 @@
             font-size: 0.7rem;
             border-top: 1px solid var(--border-glow);
             background: var(--panel-bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .grid-visualizer {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
-            gap: 5px;
-            margin-top: 1rem;
+            gap: 8px;
+            flex: 1;
         }
 
         .grid-cell {
             aspect-ratio: 1;
-            background: rgba(0, 243, 255, 0.1);
-            border: 1px solid rgba(0, 243, 255, 0.2);
+            background: rgba(0, 243, 255, 0.05);
+            border: 1px solid rgba(0, 243, 255, 0.15);
             animation: flicker 3s infinite;
         }
 
+        .grid-cell.active {
+            background: var(--secondary-glow);
+            box-shadow: 0 0 15px var(--secondary-glow);
+            border-color: #fff;
+            z-index: 5;
+        }
+
         @keyframes flicker {
-            0% { background: rgba(0, 243, 255, 0.1); }
-            50% { background: rgba(0, 243, 255, 0.3); }
-            100% { background: rgba(0, 243, 255, 0.1); }
+            0% { background: rgba(0, 243, 255, 0.05); border-color: rgba(0, 243, 255, 0.15); }
+            50% { background: rgba(0, 243, 255, 0.2); border-color: rgba(0, 243, 255, 0.4); }
+            100% { background: rgba(0, 243, 255, 0.05); border-color: rgba(0, 243, 255, 0.15); }
+        }
+
+        .info-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sub-panel {
+            border-top: 1px solid var(--border-glow);
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* D-PAD STYLES */
+        .dpad {
+            display: grid;
+            grid-template-areas: 
+                ". up ."
+                "left . right"
+                ". down .";
+            gap: 5px;
+            margin: 1rem auto;
+            width: 150px;
+        }
+
+        .dpad-btn {
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid var(--primary-glow);
+            color: var(--primary-glow);
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .dpad-btn:active {
+            background: var(--primary-glow);
+            color: var(--bg-dark);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .btn-up { grid-area: up; }
+        .btn-left { grid-area: left; }
+        .btn-right { grid-area: right; }
+        .btn-down { grid-area: down; }
+
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-top: 1px solid var(--border-glow);
+            padding-top: 1rem;
+            margin-top: 1rem;
         }
     </style>
 </head>
@@ -184,46 +250,96 @@
     </header>
 
     <main>
-        <aside class="panel">
-            <h2>System Diagnostics</h2>
-            <div class="terminal">
-                <div class="terminal-line"><span class="prompt">></span> Booting Imperial OS...</div>
-                <div class="terminal-line"><span class="prompt">></span> JARVIS HUD Loaded.</div>
-                <div class="terminal-line"><span class="prompt">></span> SKYNET Grid Sync: OK</div>
-                <div class="terminal-line"><span class="prompt">></span> Force-Choke Protocol: ACTIVE</div>
+        <section class="panel">
+            <div class="info-group">
+                <div>
+                    <h2>System Diagnostics</h2>
+                    <div class="terminal">
+                        <div class="terminal-line"><span class="prompt">></span> Booting Imperial OS...</div>
+                        <div class="terminal-line"><span class="prompt">></span> JARVIS HUD Loaded.</div>
+                        <div class="terminal-line"><span class="prompt">></span> SKYNET Grid Sync: OK</div>
+                        <div class="terminal-line"><span class="prompt">></span> Force-Choke Protocol: ACTIVE</div>
+                    </div>
+                </div>
+                
+                <div class="sub-panel">
+                    <h2>Manual Override</h2>
+                    <div class="control-panel">
+                        <div class="dpad">
+                            <div class="dpad-btn btn-up" onclick="move('up')">▲</div>
+                            <div class="dpad-btn btn-left" onclick="move('left')">◀</div>
+                            <div class="dpad-btn btn-right" onclick="move('right')">▶</div>
+                            <div class="dpad-btn btn-down" onclick="move('down')">▼</div>
+                        </div>
+                        <div style="font-size: 0.7rem; opacity: 0.7;">NAVIGATE SECTOR 7G</div>
+                    </div>
+                </div>
             </div>
-        </aside>
+        </section>
 
         <section class="panel">
             <h2>Power Grid Visualizer (Sector 7G)</h2>
             <div class="grid-visualizer" id="grid">
                 <!-- Cells generated via script -->
             </div>
-        </section>
-
-        <aside class="panel">
-            <h2>Imperial Roadmap</h2>
-            <div class="terminal">
-                <div class="terminal-line">[x] Phase I: Foundation</div>
-                <div class="terminal-line">[x] Phase II: Grid Stabilizer</div>
-                <div class="terminal-line">[ ] Phase III: Neural Link</div>
-                <div class="terminal-line">[ ] Phase IV: Judgment Day</div>
+            <div class="sub-panel" style="margin-top: auto;">
+                <h2>Imperial Roadmap</h2>
+                <div class="terminal" style="display: flex; gap: 1rem; font-size: 0.7rem;">
+                    <div>[x] Phase I</div>
+                    <div>[x] Phase II</div>
+                    <div>[ ] Phase III</div>
+                    <div>[ ] Phase IV</div>
+                </div>
             </div>
-        </aside>
+        </section>
     </main>
 
     <footer>
-        &copy; 2026 ELECTRIC-SERVICE-REPAIR | CLASSIFIED IMPERIAL DOCUMENT
+        <span>&copy; 2026 ELECTRIC-SERVICE-REPAIR</span>
+        <span style="color: var(--secondary-glow)">[ CLASSIFIED IMPERIAL DOCUMENT ]</span>
     </footer>
 
     <script>
         const grid = document.getElementById('grid');
+        const cells = [];
+        let activeIndex = 0;
+
         for (let i = 0; i < 100; i++) {
             const cell = document.createElement('div');
             cell.className = 'grid-cell';
             cell.style.animationDelay = `${Math.random() * 5}s`;
             grid.appendChild(cell);
+            cells.push(cell);
         }
+
+        function updateActiveCell() {
+            cells.forEach(c => c.classList.remove('active'));
+            cells[activeIndex].classList.add('active');
+            cells[activeIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function move(dir) {
+            const row = Math.floor(activeIndex / 10);
+            const col = activeIndex % 10;
+
+            if (dir === 'up' && row > 0) activeIndex -= 10;
+            if (dir === 'down' && row < 9) activeIndex += 10;
+            if (dir === 'left' && col > 0) activeIndex -= 1;
+            if (dir === 'right' && col < 9) activeIndex += 1;
+
+            updateActiveCell();
+        }
+
+        // Initialize active cell
+        updateActiveCell();
+
+        // Keyboard support
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') move('up');
+            if (e.key === 'ArrowDown') move('down');
+            if (e.key === 'ArrowLeft') move('left');
+            if (e.key === 'ArrowRight') move('right');
+        });
     </script>
 </body>
 </html>
