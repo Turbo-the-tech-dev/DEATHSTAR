@@ -1,0 +1,1 @@
+/* Impact-calculator - Imperial Directive */
